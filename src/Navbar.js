@@ -30,6 +30,16 @@ const NavLink = styled(Link)`
     text-decoration: none;
   }
 `;
+const buttonf = styled.button`
+  classname: "btn btn-primary" &.active {
+    color: #fff;
+    text-decoration: none;
+  }
+  &:hover {
+    color: #7595ae;
+    text-decoration: none;
+  }
+`;
 const Navbar = () => {
   return (
     <div>
@@ -40,36 +50,43 @@ const Navbar = () => {
           </a>
         </li>
         <NavLink
-          style={{ marginTop: -10, fontSize: 100, marginRight: "950px" }}
+          style={{ marginTop: -10, fontSize: 100, marginRight: "60px" }}
           to="/"
         >
           <h1 className="font-link" style={{ fontSize: 25 }} onClick="/">
             JConnect.
           </h1>
         </NavLink>
-        <NavLink style={{ marginTop: 0, fontSize: 25 }} to="/Login">
-          <h4
+        <NavLink style={{ marginTop: -9, fontSize: 25 }} to="/Login">
+          <buttonf
+            type="button"
+            className="btn btn-primary"
+            onClick="/SignUp"
             style={{
               fontSize: 25,
               marginTop: "14px",
               marginRight: "55px",
+              cursor: "pointer",
             }}
             onClick="/Login"
           >
             Login
-          </h4>
+          </buttonf>
         </NavLink>
-        <NavLink style={{ marginTop: 0, fontSize: 25 }} to="/Register">
-          <h4
+        <NavLink style={{ marginTop: -9, fontSize: 25 }} to="/Register">
+          <buttonf
+            type="button"
+            className="btn btn-primary"
+            onClick="/SignUp"
             style={{
               fontSize: 25,
               marginTop: "14px",
               marginRight: "55px",
+              cursor: "pointer",
             }}
-            onClick="/SignUp"
           >
             Sign up
-          </h4>
+          </buttonf>
         </NavLink>
       </Nav>
     </div>
