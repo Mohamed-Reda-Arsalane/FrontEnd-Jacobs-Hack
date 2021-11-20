@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Tabs, Tab, Table, Row, Col, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./App.css";
 import axios from "axios";
@@ -21,50 +22,66 @@ async function post1(url, username1, password) {
   });
 }
 
-const Login = () => {
+const Register = () => {
   var CryptoJS = require("crypto-js");
   const [users, setUsers] = useState([]);
   async function reload() {
     let data = await get1("https://azertyha78.pythonanywhere.com/user");
     setUsers(data);
   }
-  const [usernamelogin, setUsernamelogin] = useState("");
-  function onChangeusername1(e) {
-    setUsernamelogin(e.target.value);
-  }
-  const [passwordlogin, setPasswordlogin] = useState("");
-  function onChangeusername2(e) {
-    setPasswordlogin(e.target.value);
-  }
-  function onlogin(usernamelogin1, passwordlogin1) {
-    const rand = "randomizer";
-    const encrypt = (content, randi) =>
-      CryptoJS.AES.encrypt(JSON.stringify({ content }), randi).toString();
 
-    const decrypt = (crypted, randi) =>
-      JSON.parse(
-        CryptoJS.AES.decrypt(crypted, randi).toString(CryptoJS.enc.Utf8)
-      ).content;
-
-    var state = false;
-    for (var i = 0; i < users.length; i++) {
-      var obj = users[i];
-      if (usernamelogin1 === obj["Username"]) {
-        if (passwordlogin1 === obj["Password"]) {
-          for (var i = 0; i < users.length; i++) {
-            if (users[i]["Username"] == usernamelogin1) {
-              var encri = encrypt(users[i]["User_ID"], rand);
-            }
-          }
-          var decrypted = decrypt(encri, rand);
-          window.location = "/Dashboard/" + encri;
-          state = true;
+  const [usernameregister, setUsernameregister] = useState("");
+  function onChangeusername3(e) {
+    setUsernameregister(e.target.value);
+  }
+  const [passwordregister, setPasswordregister] = useState("");
+  function onChangeusername4(e) {
+    setPasswordregister(e.target.value);
+  }
+  async function postit() {
+    let data = await post1(
+      "https://azertyha78.pythonanywhere.com/user",
+      usernameregister,
+      passwordregister
+    );
+  }
+  async function onregister() {
+    if (!(usernameregister === "" || passwordregister === "")) {
+      var state = true;
+      for (var i = 0; i < users.length; i++) {
+        var obj = users[i];
+        if (usernameregister === obj["Username"]) {
+          state = false;
         }
       }
+      if (state) {
+        if (passwordregister.length >= 7) {
+          if (passwordregister.length < 19) {
+            if (hasNumber(passwordregister)) {
+              postit();
+              setUsernameregister("");
+              setPasswordregister("");
+            } else {
+              alert("Password doesn't contain a number");
+            }
+          } else {
+            alert("Password too long");
+            setPasswordregister("");
+          }
+        } else {
+          alert("Password too short");
+          setPasswordregister("");
+        }
+      } else {
+        alert("Username Already used");
+        setUsernameregister("");
+      }
+    } else {
+      alert("Enter the required fields");
     }
-    if (!state) {
-      alert("Try again!");
-    }
+  }
+  function hasNumber(myString) {
+    return /\d/.test(myString);
   }
 
   async function set_to_online(user) {
@@ -99,17 +116,17 @@ const Login = () => {
                 className="m-3 d-flex justify-content-center"
                 style={{ color: "white" }}
               >
-                Login
+                Register
               </h3>
               <h6 style={{ color: "white" }}>Username :</h6>
               <input
                 type="text"
                 className="form-control"
-                id="exampleInputEmail1"
-                aria-describedby="emailHelp"
-                name="usernamelogin"
+                id="exampleInputPassword1"
+                name="usernameregister"
+                value={usernameregister}
                 required
-                onChange={onChangeusername1}
+                onChange={onChangeusername3}
               />
               <br />
               <h6 style={{ color: "white" }}>Password :</h6>
@@ -117,16 +134,24 @@ const Login = () => {
                 type="password"
                 className="form-control"
                 id="exampleInputPassword1"
-                name="passwordlogin"
+                name="passwordregister"
+                value={passwordregister}
                 required
-                onChange={onChangeusername2}
+                onChange={onChangeusername4}
               />
               <br />
+              <PasswordChecklist
+                rules={["minLength", "maxLength", "number"]}
+                minLength={7}
+                maxLength={18}
+                value={passwordregister}
+                onChange={(isValid) => {}}
+              />
               <br />
               <button
                 type="button"
-                className="btn btn-primary"
-                onClick={() => onlogin(usernamelogin, passwordlogin)}
+                className="btn btn-primary "
+                onClick={() => onregister()}
               >
                 Register
               </button>
@@ -136,25 +161,10 @@ const Login = () => {
         <br />
         <br />
         <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
       </div>
       <br />
     </div>
   );
 };
 
-export default Login;
+export default Register;
