@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Home.js";
 import Login from "./Login.js";
 import Register from "./Register.js";
-import back from "./background1.jpg";
+import back from "./back.png";
 function App() {
   return (
     <div
